@@ -8,6 +8,7 @@ import AboutUsSection from './components/AboutUsSection';
 import Footer from './components/Footer';
 import ProductDetailsPage from './components/ProductDetailsPage';
 import CartPage from './components/CartPage';
+import CheckoutPage from './components/CheckoutPage';
 
 // Import all the new cake images
 import NutellaFerreroRocher from './assets/Nutella Ferrero Rocher.jpg';
@@ -86,15 +87,23 @@ export default function App() {
     setSelectedProduct(null);
   };
   
+  // Function to show the cart page
+  const handleShowCart = () => {
+    setCurrentPage('cart');
+  };
+
+  // Function to show the checkout page
+  const handleCheckout = () => {
+    setCurrentPage('checkout');
+  };
+  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
   
   return (
-    // The main container now uses a single, dark theme.
-    <div className="min-h-screen font-sans bg-background text-text transition-colors duration-300">
-      {/* The Navbar no longer needs the theme props. */}
-      <Navbar cartItems={cartItems} />
+    <div className="min-h-screen font-sans bg-[#f7f5f2] text-[#333333]">
+      <Navbar cartItems={cartItems} onShowCart={handleShowCart} />
       <main className="container mx-auto px-4 py-8">
         {currentPage === 'home' && (
           <>
@@ -107,7 +116,10 @@ export default function App() {
           <ProductDetailsPage product={selectedProduct} onBackToShop={handleBackToShop} onAddToCart={handleAddToCart} />
         )}
         {currentPage === 'cart' && (
-          <CartPage cartItems={cartItems} onBackToShop={handleBackToShop} />
+          <CartPage cartItems={cartItems} onBackToShop={handleBackToShop} onCheckout={handleCheckout} />
+        )}
+        {currentPage === 'checkout' && (
+          <CheckoutPage onBackToCart={() => setCurrentPage('cart')} />
         )}
       </main>
       <Footer />

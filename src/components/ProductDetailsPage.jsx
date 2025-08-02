@@ -34,7 +34,7 @@ const ProductDetailsPage = ({ product, onBackToShop, onAddToCart }) => {
           <p className="text-lg text-background dark:text-text mb-8">{product.description}</p>
           
           <div className="flex space-x-4">
-            <button onClick={() => onAddToCart(product)} className="px-8 py-4 bg-accent text-white font-bold rounded-full shadow-lg hover:bg-secondary transition-transform transform hover:scale-105">
+            <button onClick={() => onAddToCart(product)} className="px-8 py-4 bg-accent text-black font-bold rounded-full shadow-lg hover:bg-secondary transition-transform transform hover:scale-105">
               Add to Cart
             </button>
             <button className="px-8 py-4 bg-primary text-background dark:text-text font-bold rounded-full shadow-lg hover:bg-secondary transition-transform transform hover:scale-105">

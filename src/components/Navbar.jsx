@@ -6,7 +6,7 @@ const Navbar = ({ toggleTheme, isDarkMode, cartItems }) => (
   <header className="sticky top-0 z-50 bg-primary/80 dark:bg-background/80 backdrop-blur-md shadow-sm">
     <nav className="container mx-auto flex justify-between items-center px-4 py-4">
       <div className="flex items-center space-x-8">
-        <h1 className="text-background dark:text-text text-3xl font-bold font-serif">Cakery</h1>
+        <h1 className="text-background dark:text-text text-3xl font-bold font-serif">Cakesmiths</h1>
         {/* Desktop navigation links */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="#home" className="text-background dark:text-text hover:text-accent transition-colors text-lg">Home</a>
