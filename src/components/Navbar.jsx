@@ -2,11 +2,11 @@
 
 import { Sun, Moon, ShoppingCart, Search, User } from 'lucide-react';
 
-const Navbar = ({ toggleTheme, isDarkMode }) => (
+const Navbar = ({ toggleTheme, isDarkMode, cartItems }) => (
   <header className="sticky top-0 z-50 bg-primary/80 dark:bg-background/80 backdrop-blur-md shadow-sm">
     <nav className="container mx-auto flex justify-between items-center px-4 py-4">
       <div className="flex items-center space-x-8">
-        <h1 className="text-background dark:text-text text-3xl font-bold font-serif">Cakesmiths</h1>
+        <h1 className="text-background dark:text-text text-3xl font-bold font-serif">Cakery</h1>
         {/* Desktop navigation links */}
         <div className="hidden md:flex items-center space-x-6">
           <a href="#home" className="text-background dark:text-text hover:text-accent transition-colors text-lg">Home</a>
@@ -31,10 +31,16 @@ const Navbar = ({ toggleTheme, isDarkMode }) => (
           <User className="h-6 w-6" />
         </button>
         <button
-          className="p-2 rounded-full text-background dark:text-text hover:bg-secondary transition-colors"
+          className="relative p-2 rounded-full text-background dark:text-text hover:bg-secondary transition-colors"
           aria-label="View shopping cart"
+          onClick={() => window.location.href = '#cart'}
         >
           <ShoppingCart className="h-6 w-6" />
+          {cartItems.length > 0 && (
+            <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 transform translate-x-1/2 -translate-y-1/2 bg-accent rounded-full">
+              {cartItems.length}
+            </span>
+          )}
         </button>
         <button
           onClick={toggleTheme}

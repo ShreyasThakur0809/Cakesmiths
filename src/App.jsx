@@ -6,6 +6,8 @@ import HeroSection from './components/HeroSection';
 import ProductList from './components/ProductList';
 import AboutUsSection from './components/AboutUsSection';
 import Footer from './components/Footer';
+import ProductDetailsPage from './components/ProductDetailsPage';
+import CartPage from './components/CartPage';
 
 // Import all the new cake images
 import NutellaFerreroRocher from './assets/Nutella Ferrero Rocher.jpg';
@@ -15,6 +17,7 @@ import strawberry from './assets/strawberry.jpg';
 import SwissChocolate from './assets/Swiss Chocolate.jpg';
 import Blueberrycake from './assets/Blueberry cake.jpg';
 import BowlCake from './assets/Bowl Cake.jpg';
+import './assets/cake.jpg'; 
 import CricketCake from './assets/Cricket Cake.jpg';
 import Customised2 from './assets/Customised 2.jpg';
 import Customised3 from './assets/Customised 3.jpg';
@@ -31,8 +34,10 @@ import Mixfruitcake from './assets/Mix fruit cake.jpg';
 
 // The main App component that renders all other components and manages global state.
 export default function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  
+  const [currentPage, setCurrentPage] = useState('home');
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]); // New state for the shopping cart
+
   // A list of all cake images and their data.
   const cakeProducts = [
     { id: 1, name: 'Velvet Dream', description: 'A rich red velvet cake with cream cheese frosting.', price: '35.00', imageUrl: RedVelvet },
@@ -56,27 +61,54 @@ export default function App() {
     { id: 19, name: 'Housewarming Cake', description: 'A special cake for a housewarming party.', price: '45.00', imageUrl: Housewarmingcake },
   ];
 
-  useEffect(() => {
-    const html = document.documentElement;
-    if (isDarkMode) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-  }, [isDarkMode]);
+  // Function to handle showing the product page
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setCurrentPage('product');
+  };
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
+  // Function to add an item to the cart
+  const handleAddToCart = (product) => {
+    setCartItems(prevItems => {
+      const existingItem = prevItems.find(item => item.id === product.id);
+      if (existingItem) {
+        return prevItems.map(item =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevItems, { ...product, quantity: 1 }];
+    });
+  };
+
+  // Function to go back to the main page
+  const handleBackToShop = () => {
+    setCurrentPage('home');
+    setSelectedProduct(null);
   };
   
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
+  
   return (
-    <div className="min-h-screen font-sans bg-primary text-background transition-colors duration-300 dark:bg-background dark:text-text">
-      <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
+    // The main container now uses a single, dark theme.
+    <div className="min-h-screen font-sans bg-background text-text transition-colors duration-300">
+      {/* The Navbar no longer needs the theme props. */}
+      <Navbar cartItems={cartItems} />
       <main className="container mx-auto px-4 py-8">
-        <HeroSection />
-        {/* Pass the cake products as a prop to the ProductList component. */}
-        <ProductList products={cakeProducts} />
-        <AboutUsSection />
+        {currentPage === 'home' && (
+          <>
+            <HeroSection />
+            <ProductList products={cakeProducts} onProductClick={handleProductClick} />
+            <AboutUsSection />
+          </>
+        )}
+        {currentPage === 'product' && (
+          <ProductDetailsPage product={selectedProduct} onBackToShop={handleBackToShop} onAddToCart={handleAddToCart} />
+        )}
+        {currentPage === 'cart' && (
+          <CartPage cartItems={cartItems} onBackToShop={handleBackToShop} />
+        )}
       </main>
       <Footer />
     </div>
