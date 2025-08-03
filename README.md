@@ -1,10 +1,11 @@
 # CAKESMITHS
+
 https://cakesmiths.vercel.app/
 
 ## Website Screenshots
 
 This is a screenshot of the cake selection page:
-![Cake Selection](src/assets/cake select.jpeg)
+![Cake Selection](https://raw.githubusercontent.com/ShreyasThakur0809/CAKESMITHS-/main/src/assets/cake%20select.jpeg)
 
 This is a screenshot of the landing page:
-![Landing Page](src/assets/cakesmith landing pg.jpeg)
+![Landing Page](https://raw.githubusercontent.com/ShreyasThakur0809/CAKESMITHS-/main/src/assets/cakesmith%20landing%20pg.jpeg)
