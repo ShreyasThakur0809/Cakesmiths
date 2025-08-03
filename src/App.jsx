@@ -8,7 +8,6 @@ import AboutUsSection from './components/AboutUsSection';
 import Footer from './components/Footer';
 import ProductDetailsPage from './components/ProductDetailsPage';
 import CartPage from './components/CartPage';
-import CheckoutPage from './components/CheckoutPage';
 
 // Import all the new cake images
 import NutellaFerreroRocher from './assets/Nutella Ferrero Rocher.jpg';
@@ -35,9 +34,10 @@ import Mixfruitcake from './assets/Mix fruit cake.jpg';
 
 // The main App component that renders all other components and manages global state.
 export default function App() {
+  const [isDarkMode, setIsDarkMode] = useState(true); // Set default to dark mode
   const [currentPage, setCurrentPage] = useState('home');
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cartItems, setCartItems] = useState([]); // New state for the shopping cart
+  const [cartItems, setCartItems] = useState([]);
 
   // A list of all cake images and their data.
   const cakeProducts = [
@@ -62,13 +62,11 @@ export default function App() {
     { id: 19, name: 'Housewarming Cake', description: 'A special cake for a housewarming party.', price: '45.00', imageUrl: Housewarmingcake },
   ];
 
-  // Function to handle showing the product page
   const handleProductClick = (product) => {
     setSelectedProduct(product);
     setCurrentPage('product');
   };
 
-  // Function to add an item to the cart
   const handleAddToCart = (product) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
@@ -81,29 +79,31 @@ export default function App() {
     });
   };
 
-  // Function to go back to the main page
   const handleBackToShop = () => {
     setCurrentPage('home');
     setSelectedProduct(null);
   };
   
-  // Function to show the cart page
-  const handleShowCart = () => {
-    setCurrentPage('cart');
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
   };
 
-  // Function to show the checkout page
-  const handleCheckout = () => {
-    setCurrentPage('checkout');
-  };
+  useEffect(() => {
+    const html = document.documentElement;
+    if (isDarkMode) {
+      html.classList.add('dark');
+    } else {
+      html.classList.remove('dark');
+    }
+  }, [isDarkMode]);
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [currentPage]);
   
   return (
-    <div className="min-h-screen font-sans bg-[#f7f5f2] text-[#333333]">
-      <Navbar cartItems={cartItems} onShowCart={handleShowCart} />
+    <div className="min-h-screen font-sans bg-background dark:bg-background text-text transition-colors duration-300">
+      <Navbar cartItems={cartItems} toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
       <main className="container mx-auto px-4 py-8">
         {currentPage === 'home' && (
           <>
@@ -116,10 +116,7 @@ export default function App() {
           <ProductDetailsPage product={selectedProduct} onBackToShop={handleBackToShop} onAddToCart={handleAddToCart} />
         )}
         {currentPage === 'cart' && (
-          <CartPage cartItems={cartItems} onBackToShop={handleBackToShop} onCheckout={handleCheckout} />
-        )}
-        {currentPage === 'checkout' && (
-          <CheckoutPage onBackToCart={() => setCurrentPage('cart')} />
+          <CartPage cartItems={cartItems} onBackToShop={handleBackToShop} />
         )}
       </main>
       <Footer />

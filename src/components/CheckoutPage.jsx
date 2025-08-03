@@ -13,6 +13,7 @@ const CheckoutPage = ({ onBackToCart }) => {
     expiry: '',
     cvv: ''
   });
+  const [orderPlaced, setOrderPlaced] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,10 +22,24 @@ const CheckoutPage = ({ onBackToCart }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would handle the payment and order submission logic.
+    // Simulate order placement. In a real application, you would connect to an API here.
     console.log('Order submitted:', formData);
-    alert('Your order has been placed successfully!');
+    setOrderPlaced(true);
   };
+
+  if (orderPlaced) {
+    return (
+      <div className="p-8 bg-primary rounded-3xl shadow-xl text-center">
+        <h1 className="text-5xl font-bold text-secondary font-serif mb-8">Order Placed!</h1>
+        <p className="text-lg text-secondary mb-8">
+          Thank you for your purchase. Your order details have been sent to your email.
+        </p>
+        <button onClick={onBackToCart} className="px-8 py-4 bg-[#f23958] text-white font-bold rounded-full shadow-lg hover:bg-[#851a2c] transition-transform transform hover:scale-105">
+          Continue Shopping
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-8 bg-primary rounded-3xl shadow-xl">
